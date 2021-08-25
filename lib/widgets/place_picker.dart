@@ -91,7 +91,8 @@ class PlacePickerState extends State<PlacePicker> {
         draggable: true,
         position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
         markerId: MarkerId("selected-location"),
-        icon: pinIcon));
+      //  icon: pinIcon
+    ));
   }
 
   @override
@@ -113,7 +114,7 @@ class PlacePickerState extends State<PlacePicker> {
         markerId: MarkerId('selected-location'),
         position: newPosition,
         draggable: true,
-        icon: pinIcon,
+       // icon: pinIcon,
       ),
     );
     setState(() {});
