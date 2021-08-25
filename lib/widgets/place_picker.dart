@@ -88,9 +88,9 @@ class PlacePickerState extends State<PlacePicker> {
       });
     });
     markers.add(Marker(
-        draggable: true,
-        position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
-        markerId: MarkerId("selected-location"),
+      draggable: true,
+      position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
+      markerId: MarkerId("selected-location"),
       //  icon: pinIcon
     ));
   }
@@ -102,22 +102,9 @@ class PlacePickerState extends State<PlacePicker> {
   }
 
   void _updatePosition(CameraPosition _position) {
-    Marker marker =
-        markers.firstWhere((p) => p.markerId == MarkerId('selected-location'));
-
     LatLng newPosition =
         LatLng(_position.target.latitude, _position.target.longitude);
     moveToLocation(newPosition);
-    markers.remove(marker);
-    markers.add(
-      Marker(
-        markerId: MarkerId('selected-location'),
-        position: newPosition,
-        draggable: true,
-       // icon: pinIcon,
-      ),
-    );
-    setState(() {});
   }
 
   @override
@@ -388,8 +375,12 @@ class PlacePickerState extends State<PlacePicker> {
     // markers.clear();
     setState(() {
       markers.clear();
-      markers.add(
-          Marker(markerId: MarkerId("selected-location"), position: latLng));
+      markers.add(Marker(
+        draggable: true,
+        markerId: MarkerId("selected-location"),
+        position: latLng,
+        // icon: pinIcon
+      ));
     });
   }
 
@@ -399,7 +390,7 @@ class PlacePickerState extends State<PlacePicker> {
       final url = Uri.parse(
           "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
           "key=${widget.apiKey}&location=${latLng.latitude},${latLng.longitude}"
-          "&radius=150&language=${widget.localizationItem!.languageCode}");
+          "&rankby=distance&language=${widget.localizationItem!.languageCode}");
 
       final response = await http.get(url);
 
