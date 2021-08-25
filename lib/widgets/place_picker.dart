@@ -28,7 +28,7 @@ class PlacePicker extends StatefulWidget {
   LocalizationItem? localizationItem;
   BitmapDescriptor? pinIcon;
 
-  PlacePicker(this.apiKey, {this.displayLocation, this.localizationItem}) {
+  PlacePicker(this.apiKey, {this.displayLocation, this.localizationItem, this.pinIcon}) {
     if (this.localizationItem == null) {
       this.localizationItem = new LocalizationItem();
     }
