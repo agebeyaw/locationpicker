@@ -40,6 +40,7 @@ class PlacePicker extends StatefulWidget {
 /// Place picker state
 class PlacePickerState extends State<PlacePicker> {
   final Completer<GoogleMapController> mapController = Completer();
+  late BitmapDescriptor pinIcon;
 
   /// Indicator for the selected location
   final Set<Marker> markers = Set();
@@ -79,11 +80,16 @@ class PlacePickerState extends State<PlacePicker> {
   @override
   void initState() {
     super.initState();
+    BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(48, 48)), 'assets/pin.png')
+        .then((onValue) {
+      pinIcon = onValue;
+    });
     markers.add(Marker(
-      draggable: true,
-      position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
-      markerId: MarkerId("selected-location"),
-    ));
+        draggable: true,
+        position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
+        markerId: MarkerId("selected-location"),
+        icon: pinIcon));
   }
 
   @override
@@ -105,6 +111,7 @@ class PlacePickerState extends State<PlacePicker> {
         markerId: MarkerId('selected-location'),
         position: newPosition,
         draggable: true,
+        icon: pinIcon,
       ),
     );
     setState(() {});
