@@ -539,10 +539,9 @@ class PlacePickerState extends State<PlacePicker> {
     });
 
     setMarker(latLng);
+    reverseGeocodeLatLng(latLng);
 
     if (!noSearch) {
-      reverseGeocodeLatLng(latLng);
-
       getNearbyPlaces(latLng);
     }
   }
