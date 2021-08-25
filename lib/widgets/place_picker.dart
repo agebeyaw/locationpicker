@@ -103,7 +103,7 @@ class PlacePickerState extends State<PlacePicker> {
 
   void _updatePosition(CameraPosition _position) {
     moveToLocation(
-        LatLng(_position.target.latitude, _position.target.longitude), true);
+        LatLng(_position.target.latitude, _position.target.longitude));
   }
 
   @override
@@ -127,11 +127,11 @@ class PlacePickerState extends State<PlacePicker> {
               zoomControlsEnabled: true,
               zoomGesturesEnabled: true,
               myLocationEnabled: true,
-            //  onCameraMove: ((_position) => _updatePosition(_position)),
+              //  onCameraMove: ((_position) => _updatePosition(_position)),
               onMapCreated: onMapCreated,
               onTap: (latLng) {
                 clearOverlay();
-                moveToLocation(latLng, false);
+                moveToLocation(latLng);
               },
               markers: markers,
             ),
@@ -155,7 +155,7 @@ class PlacePickerState extends State<PlacePicker> {
                     child: ListView(
                       children: nearbyPlaces
                           .map((it) => NearbyPlaceItem(
-                              it, () => moveToLocation(it.latLng!, false)))
+                              it, () => moveToLocation(it.latLng!)))
                           .toList(),
                     ),
                   ),
@@ -323,7 +323,7 @@ class PlacePickerState extends State<PlacePicker> {
       }
 
       final location = responseJson['result']['geometry']['location'];
-      moveToLocation(LatLng(location['lat'], location['lng']), false);
+      moveToLocation(LatLng(location['lat'], location['lng']));
     } catch (e) {
       print(e);
     }
@@ -531,7 +531,7 @@ class PlacePickerState extends State<PlacePicker> {
 
   /// Moves the camera to the provided location and updates other UI features to
   /// match the location.
-  void moveToLocation(LatLng latLng, bool noSearch) {
+  void moveToLocation(LatLng latLng) {
     this.mapController.future.then((controller) {
       controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -542,20 +542,18 @@ class PlacePickerState extends State<PlacePicker> {
     setMarker(latLng);
     reverseGeocodeLatLng(latLng);
 
-    if (!noSearch) {
-      getNearbyPlaces(latLng);
-    }
+    getNearbyPlaces(latLng);
   }
 
   void moveToCurrentUserLocation() {
     if (widget.displayLocation != null) {
-      moveToLocation(widget.displayLocation!, false);
+      moveToLocation(widget.displayLocation!);
       return;
     }
 
     Location().getLocation().then((locationData) {
       LatLng target = LatLng(locationData.latitude!, locationData.longitude!);
-      moveToLocation(target, false);
+      moveToLocation(target);
     }).catchError((error) {
       // TODO: Handle the exception here
       print(error);
