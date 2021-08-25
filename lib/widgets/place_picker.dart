@@ -81,7 +81,7 @@ class PlacePickerState extends State<PlacePicker> {
     super.initState();
     markers.add(Marker(
       draggable: true,
-      position: widget.displayLocation ?? LatLng(5.6037, 0.1870),
+      position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
       markerId: MarkerId("selected-location"),
     ));
   }
@@ -90,6 +90,21 @@ class PlacePickerState extends State<PlacePicker> {
   void dispose() {
     this.overlayEntry?.remove();
     super.dispose();
+  }
+
+  void _updatePosition(CameraPosition _position) {
+    Marker marker =
+        markers.firstWhere((p) => p.markerId == MarkerId('selected-location'));
+
+    markers.remove(marker);
+    markers.add(
+      Marker(
+        markerId: MarkerId('selected-location'),
+        position: LatLng(_position.target.latitude, _position.target.longitude),
+        draggable: true,
+      ),
+    );
+    setState(() {});
   }
 
   @override
@@ -106,11 +121,12 @@ class PlacePickerState extends State<PlacePicker> {
           Expanded(
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: widget.displayLocation ?? LatLng(5.6037, 0.1870),
+                target: widget.displayLocation ?? LatLng(9.005401, 38.763611),
                 zoom: 15,
               ),
               myLocationButtonEnabled: true,
               myLocationEnabled: true,
+              onCameraMove: ((_position) => _updatePosition(_position)),
               onMapCreated: onMapCreated,
               onTap: (latLng) {
                 clearOverlay();
