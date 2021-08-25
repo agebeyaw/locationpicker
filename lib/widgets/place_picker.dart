@@ -83,7 +83,9 @@ class PlacePickerState extends State<PlacePicker> {
     BitmapDescriptor.fromAssetImage(
             ImageConfiguration(size: Size(48, 48)), 'assets/pin.png')
         .then((onValue) {
-      pinIcon = onValue;
+      setState(() {
+        pinIcon = onValue;
+      });
     });
     markers.add(Marker(
         draggable: true,
