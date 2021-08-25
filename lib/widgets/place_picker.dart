@@ -102,9 +102,8 @@ class PlacePickerState extends State<PlacePicker> {
   }
 
   void _updatePosition(CameraPosition _position) {
-    LatLng newPosition =
-        LatLng(_position.target.latitude, _position.target.longitude);
-    moveToLocation(newPosition, true);
+    moveToLocation(
+        LatLng(_position.target.latitude, _position.target.longitude), true);
   }
 
   @override
@@ -125,8 +124,10 @@ class PlacePickerState extends State<PlacePicker> {
                 zoom: 15,
               ),
               myLocationButtonEnabled: true,
+              zoomControlsEnabled: true,
+              zoomGesturesEnabled: true,
               myLocationEnabled: true,
-              onCameraMove: ((_position) => _updatePosition(_position)),
+            //  onCameraMove: ((_position) => _updatePosition(_position)),
               onMapCreated: onMapCreated,
               onTap: (latLng) {
                 clearOverlay();
