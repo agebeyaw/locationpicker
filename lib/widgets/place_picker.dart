@@ -26,6 +26,7 @@ class PlacePicker extends StatefulWidget {
   /// map does not pan to the user's current location.
   final LatLng? displayLocation;
   LocalizationItem? localizationItem;
+  BitmapDescriptor? pinIcon;
 
   PlacePicker(this.apiKey, {this.displayLocation, this.localizationItem}) {
     if (this.localizationItem == null) {
@@ -40,7 +41,6 @@ class PlacePicker extends StatefulWidget {
 /// Place picker state
 class PlacePickerState extends State<PlacePicker> {
   final Completer<GoogleMapController> mapController = Completer();
-  late BitmapDescriptor pinIcon;
 
   /// Indicator for the selected location
   final Set<Marker> markers = Set();
@@ -80,18 +80,12 @@ class PlacePickerState extends State<PlacePicker> {
   @override
   void initState() {
     super.initState();
-    BitmapDescriptor.fromAssetImage(
-            ImageConfiguration(size: Size(48, 48)), 'assets/pin.png')
-        .then((onValue) {
-      setState(() {
-        pinIcon = onValue;
-      });
-    });
+
     markers.add(Marker(
       draggable: true,
       position: widget.displayLocation ?? LatLng(9.005401, 38.763611),
       markerId: MarkerId("selected-location"),
-      //  icon: pinIcon
+      icon: widget.pinIcon!,
     ));
   }
 
@@ -380,7 +374,7 @@ class PlacePickerState extends State<PlacePicker> {
         draggable: true,
         markerId: MarkerId("selected-location"),
         position: latLng,
-        // icon: pinIcon
+        icon: widget.pinIcon!,
       ));
     });
   }
