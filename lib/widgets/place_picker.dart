@@ -96,11 +96,14 @@ class PlacePickerState extends State<PlacePicker> {
     Marker marker =
         markers.firstWhere((p) => p.markerId == MarkerId('selected-location'));
 
+    LatLng newPosition =
+        LatLng(_position.target.latitude, _position.target.longitude);
+    moveToLocation(newPosition);
     markers.remove(marker);
     markers.add(
       Marker(
         markerId: MarkerId('selected-location'),
-        position: LatLng(_position.target.latitude, _position.target.longitude),
+        position: newPosition,
         draggable: true,
       ),
     );
