@@ -104,7 +104,7 @@ class PlacePickerState extends State<PlacePicker> {
   void _updatePosition(CameraPosition _position) {
     LatLng newPosition =
         LatLng(_position.target.latitude, _position.target.longitude);
-    moveToLocation(newPosition);
+    moveToLocation(newPosition, true);
   }
 
   @override
@@ -130,7 +130,7 @@ class PlacePickerState extends State<PlacePicker> {
               onMapCreated: onMapCreated,
               onTap: (latLng) {
                 clearOverlay();
-                moveToLocation(latLng);
+                moveToLocation(latLng, false);
               },
               markers: markers,
             ),
@@ -154,7 +154,7 @@ class PlacePickerState extends State<PlacePicker> {
                     child: ListView(
                       children: nearbyPlaces
                           .map((it) => NearbyPlaceItem(
-                              it, () => moveToLocation(it.latLng!)))
+                              it, () => moveToLocation(it.latLng!, false)))
                           .toList(),
                     ),
                   ),
@@ -322,7 +322,7 @@ class PlacePickerState extends State<PlacePicker> {
       }
 
       final location = responseJson['result']['geometry']['location'];
-      moveToLocation(LatLng(location['lat'], location['lng']));
+      moveToLocation(LatLng(location['lat'], location['lng']), false);
     } catch (e) {
       print(e);
     }
@@ -530,7 +530,7 @@ class PlacePickerState extends State<PlacePicker> {
 
   /// Moves the camera to the provided location and updates other UI features to
   /// match the location.
-  void moveToLocation(LatLng latLng) {
+  void moveToLocation(LatLng latLng, bool noSearch) {
     this.mapController.future.then((controller) {
       controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -540,20 +540,22 @@ class PlacePickerState extends State<PlacePicker> {
 
     setMarker(latLng);
 
-    reverseGeocodeLatLng(latLng);
+    if (!noSearch) {
+      reverseGeocodeLatLng(latLng);
 
-    getNearbyPlaces(latLng);
+      getNearbyPlaces(latLng);
+    }
   }
 
   void moveToCurrentUserLocation() {
     if (widget.displayLocation != null) {
-      moveToLocation(widget.displayLocation!);
+      moveToLocation(widget.displayLocation!, false);
       return;
     }
 
     Location().getLocation().then((locationData) {
       LatLng target = LatLng(locationData.latitude!, locationData.longitude!);
-      moveToLocation(target);
+      moveToLocation(target, false);
     }).catchError((error) {
       // TODO: Handle the exception here
       print(error);
