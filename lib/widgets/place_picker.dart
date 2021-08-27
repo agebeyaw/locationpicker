@@ -118,7 +118,7 @@ class PlacePickerState extends State<PlacePicker> {
                 zoom: 15,
               ),
               myLocationButtonEnabled: true,
-              zoomControlsEnabled: true,
+              zoomControlsEnabled: false,
               zoomGesturesEnabled: true,
               myLocationEnabled: true,
               //  onCameraMove: ((_position) => _updatePosition(_position)),
