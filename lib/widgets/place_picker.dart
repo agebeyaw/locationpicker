@@ -189,10 +189,10 @@ class PlacePickerState extends State<PlacePicker> {
     clearOverlay();
 
     setState(() {
-      hasSearchTerm = place.length > 0;
+      hasSearchTerm = place.length > 2;
     });
 
-    if (place.length < 1) {
+    if (place.length < 3) {
       return;
     }
 
@@ -241,7 +241,7 @@ class PlacePickerState extends State<PlacePicker> {
           "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
           "key=${widget.apiKey}&"
           "language=${widget.localizationItem!.languageCode}&"
-          "input={$place}&sessiontoken=${this.sessionToken}";
+          "input={$place}&sessiontoken=${this.sessionToken}&components=country:eth";
 
       if (this.locationResult != null) {
         endpoint += "&location=${this.locationResult!.latLng!.latitude}," +
